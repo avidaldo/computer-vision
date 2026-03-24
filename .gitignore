@@ -1,0 +1,11 @@
+outputs/
+tmp_faces/
+models/
+face_db/
+
+# PyTorch model files
+*.pt
+*.pth
+
+*.mp4
+*.mov
