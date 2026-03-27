@@ -4,7 +4,6 @@ A hands-on module covering computer vision from image fundamentals to face authe
 
 The module is organized into three areas. Each area can be studied independently, though the progression from one to the next is intentional.
 
----
 
 ## OpenCV: Images and Video
 
@@ -17,7 +16,7 @@ Classical image processing. Filtering and convolution (Gaussian, median, bilater
 [opencv/opencv_video.ipynb](opencv/opencv_video.ipynb)
 From files and webcams. Reading and writing video, per-frame processing, codec selection, background subtraction with MOG2, and dense optical flow with Farneback.
 
----
+
 
 ## YOLO: Object Detection
 
@@ -27,7 +26,6 @@ Concepts and practice in one notebook. Part one covers the core building blocks 
 [yolo/yolo_custom_training.ipynb](yolo/yolo_custom_training.ipynb)
 Adapting YOLO to new data. Covers the YOLO annotation format, dataset validation, training configuration, and reading training plots. Includes a rigorous explanation of transfer learning — the spectrum from feature extraction (frozen backbone) to full fine-tuning — and the concept of catastrophic forgetting.
 
----
 
 ## Embeddings, Databases, and Recognition
 
@@ -40,7 +38,6 @@ Vector databases as infrastructure. How ChromaDB stores embeddings and retrieves
 [face_recognition_pipeline.ipynb](face_recognition_pipeline.ipynb)
 Putting it all together. A five-step pipeline: capture → detect (YOLO) → embed (CLIP) → store (ChromaDB) → verify. Each step is explained and demonstrated with real images. The notebook also shows the webcam capture pattern used in a production authentication system, and includes a similarity heatmap to visualise the separation between enrolled identities.
 
----
 
 ## Suggested Project: Face Authentication with a Webcam
 
@@ -50,13 +47,14 @@ The notebooks above provide all the pieces needed to build a small face authenti
 
 **Suggested steps**:
 
-1. Use the webcam pattern in [09_face_recognition_pipeline.ipynb](09_face_recognition_pipeline.ipynb) to capture several frames per person at enrollment.
+1. Use the webcam pattern in [face_recognition_pipeline.ipynb](face_recognition_pipeline.ipynb) to capture several frames per person at enrollment.
 2. For each frame, detect and crop the face using the YOLO pipeline shown in the same notebook.
-3. Embed each crop with CLIP and store in a [ChromaDB persistent collection](08_chromadb_intro.ipynb).
+3. Embed each crop with CLIP and store in a [ChromaDB persistent collection](chromadb_intro.ipynb).
 4. At verification, capture a new frame, embed it, and query the database. Apply the 0.85 similarity threshold as a starting point — adjust based on your hardware and lighting.
-5. Add a quality check (blur detection, brightness bounds) before embedding to avoid storing bad captures; the webcam section of [09_face_recognition_pipeline.ipynb](09_face_recognition_pipeline.ipynb) shows this pattern.
+5. Add a quality check (blur detection, brightness bounds) before embedding to avoid storing bad captures; the webcam section of [face_recognition_pipeline.ipynb](face_recognition_pipeline.ipynb) shows this pattern.
 
 **Extensions to consider**:
+
 - Use `yolov8n-face.pt` instead of the general model for tighter face crops.
 - Enroll multiple frames per person and compare the query against all of them (soft voting).
 - Store enrollment data with timestamps; flag embeddings older than N days as stale.
@@ -77,9 +75,9 @@ The gap between this notebook-based prototype and a real deployment is primarily
 ├── yolo/
 │   ├── object_detection_and_yolo.ipynb
 │   └── yolo_custom_training.ipynb
-├── 07_vectors_and_embeddings.ipynb
-├── 08_chromadb_intro.ipynb
-├── 09_face_recognition_pipeline.ipynb
+├── vectors_and_embeddings.ipynb
+├── chromadb_intro.ipynb
+├── face_recognition_pipeline.ipynb
 ├── img/                  # static test images committed to the repo
 │   ├── lenna.png
 │   ├── baboon.png
