@@ -4,7 +4,6 @@ A hands-on module covering computer vision from image fundamentals to face authe
 
 The module is organized into three areas. Each area can be studied independently, though the progression from one to the next is intentional.
 
-
 ## OpenCV: Images and Video
 
 [opencv/opencv_fundamentals.ipynb](opencv/opencv_fundamentals.ipynb)
@@ -16,8 +15,6 @@ Classical image processing. Filtering and convolution (Gaussian, median, bilater
 [opencv/opencv_video.ipynb](opencv/opencv_video.ipynb)
 From files and webcams. Reading and writing video, per-frame processing, codec selection, background subtraction with MOG2, and dense optical flow with Farneback.
 
-
-
 ## YOLO: Object Detection
 
 [yolo/object_detection_and_yolo.ipynb](yolo/object_detection_and_yolo.ipynb)
@@ -25,7 +22,6 @@ Concepts and practice in one notebook. Part one covers the core building blocks 
 
 [yolo/yolo_custom_training.ipynb](yolo/yolo_custom_training.ipynb)
 Adapting YOLO to new data. Covers the YOLO annotation format, dataset validation, training configuration, and reading training plots. Includes a rigorous explanation of transfer learning — the spectrum from feature extraction (frozen backbone) to full fine-tuning — and the concept of catastrophic forgetting.
-
 
 ## Embeddings, Databases, and Recognition
 
@@ -37,7 +33,6 @@ Vector databases as infrastructure. How ChromaDB stores embeddings and retrieves
 
 [face_recognition_pipeline.ipynb](face_recognition_pipeline.ipynb)
 Putting it all together. A five-step pipeline: capture → detect (YOLO) → embed (CLIP) → store (ChromaDB) → verify. Each step is explained and demonstrated with real images. The notebook also shows the webcam capture pattern used in a production authentication system, and includes a similarity heatmap to visualise the separation between enrolled identities.
-
 
 ## Suggested Project: Face Authentication with a Webcam
 
