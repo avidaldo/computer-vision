@@ -1,7 +1,5 @@
-outputs/
-tmp_faces/
-models/
-face_db/
+artifacts/
+resources/models/
 
 # PyTorch model files
 *.pt

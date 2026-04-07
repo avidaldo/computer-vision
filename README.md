@@ -6,33 +6,20 @@ The module is organized into three areas. Each area can be studied independently
 
 ## OpenCV: Images and Video
 
-[opencv/opencv_fundamentals.ipynb](opencv/opencv_fundamentals.ipynb)
-Loading, displaying, and manipulating images. Covers colour spaces (BGR, RGB, HSV, LAB), basic transformations (resize, rotate, crop, flip), drawing, and saving. Explains why `uint8` matters and when to prefer PNG over JPEG.
-
-[opencv/opencv_image_processing.ipynb](opencv/opencv_image_processing.ipynb)
-Classical image processing. Filtering and convolution (Gaussian, median, bilateral, custom kernels), edge detection (Sobel, Laplacian, Canny with hysteresis threshold tuning), thresholding (fixed, Otsu, adaptive), morphological operations, contour detection, and histogram equalization including CLAHE.
-
-[opencv/opencv_video.ipynb](opencv/opencv_video.ipynb)
-From files and webcams. Reading and writing video, per-frame processing, codec selection, background subtraction with MOG2, and dense optical flow with Farneback.
+- [opencv/opencv_fundamentals.ipynb](opencv/opencv_fundamentals.ipynb): loading and manipulating images; BGR vs RGB, `uint8`, resizing, rotation, cropping, drawing, and saving.
+- [opencv/opencv_image_processing.ipynb](opencv/opencv_image_processing.ipynb): classical image processing; filtering, convolution, edge detection, thresholding, morphology, contours, and CLAHE.
+- [opencv/opencv_video.ipynb](opencv/opencv_video.ipynb): video processing from files and webcams; frame loops, codecs, background subtraction, and optical flow.
 
 ## YOLO: Object Detection
 
-[yolo/object_detection_and_yolo.ipynb](yolo/object_detection_and_yolo.ipynb)
-Concepts and practice in one notebook. Part one covers the core building blocks of object detection — bounding box formats, IoU, Non-Maximum Suppression, detection metrics (precision, recall, mAP50, mAP50-95), and how YOLO is structured (backbone / neck / head). Part two is hands-on: loading a pre-trained model, running inference on images and video, filtering detections, instance segmentation, model comparison by speed, and export for deployment.
-
-[yolo/yolo_custom_training.ipynb](yolo/yolo_custom_training.ipynb)
-Adapting YOLO to new data. Covers the YOLO annotation format, dataset validation, training configuration, and reading training plots. Includes a rigorous explanation of transfer learning — the spectrum from feature extraction (frozen backbone) to full fine-tuning — and the concept of catastrophic forgetting.
+- [yolo/object_detection_and_yolo.ipynb](yolo/object_detection_and_yolo.ipynb): detection concepts and inference; bounding boxes, IoU, NMS, metrics, pre-trained inference, segmentation, speed comparison, and export.
+- [yolo/yolo_custom_training.ipynb](yolo/yolo_custom_training.ipynb): fine-tuning YOLO; annotation format, dataset validation, training configuration, plots, transfer learning, and catastrophic forgetting.
 
 ## Embeddings, Databases, and Recognition
 
-[vectors_and_embeddings.ipynb](vectors_and_embeddings.ipynb)
-From pixel arrays to semantic vectors. Vector arithmetic, Euclidean vs cosine distance, and how CLIP maps images (and text) to a shared 512-D space using a Vision Transformer backbone. Includes PCA visualisation and a bridge to NLP: word embeddings, contextual embeddings, and how the same vector-similarity idea underlies retrieval-augmented generation (RAG).
-
-[chromadb_intro.ipynb](chromadb_intro.ipynb)
-Vector databases as infrastructure. How ChromaDB stores embeddings and retrieves them by approximate nearest-neighbour search (HNSW). The cosine distance formula, metadata filtering, ephemeral vs persistent clients, and choosing the right distance metric for normalised CLIP embeddings.
-
-[face_recognition_pipeline.ipynb](face_recognition_pipeline.ipynb)
-Putting it all together. A five-step pipeline: capture → detect (YOLO) → embed (CLIP) → store (ChromaDB) → verify. Each step is explained and demonstrated with real images. The notebook also shows the webcam capture pattern used in a production authentication system, and includes a similarity heatmap to visualise the separation between enrolled identities.
+- [vectors_and_embeddings.ipynb](vectors_and_embeddings.ipynb): image embeddings; vector arithmetic, cosine vs Euclidean distance, CLIP, PCA, and links to NLP and RAG.
+- [chromadb_intro.ipynb](chromadb_intro.ipynb): vector databases; HNSW search, cosine distance, metadata filtering, and ephemeral vs persistent clients.
+- [face_recognition_pipeline.ipynb](face_recognition_pipeline.ipynb): end-to-end face verification; capture, detect, embed, store, verify, webcam workflow, and a similarity heatmap.
 
 ## Suggested Project: Face Authentication with a Webcam
 
@@ -57,11 +44,9 @@ The notebooks above provide all the pieces needed to build a small face authenti
 
 The gap between this notebook-based prototype and a real deployment is primarily reliability engineering, not algorithmic complexity, which makes it a useful project scope for learning.
 
----
-
 ## Repository Structure
 
-```
+```text
 .
 ├── opencv/
 │   ├── opencv_fundamentals.ipynb
@@ -73,16 +58,19 @@ The gap between this notebook-based prototype and a real deployment is primarily
 ├── vectors_and_embeddings.ipynb
 ├── chromadb_intro.ipynb
 ├── face_recognition_pipeline.ipynb
-├── img/                  # static test images committed to the repo
-│   ├── lenna.png
-│   ├── baboon.png
-│   ├── peppers.jpg
-│   ├── bus.jpg           # YOLO demo image
-│   ├── scene1.jpg
-│   ├── scene2.jpg
-│   └── scene3.jpg
-├── outputs/              # gitignored; generated by notebooks
-└── models/               # gitignored; downloaded YOLO weights
+├── resources/
+│   ├── images/           # static images used by the notebooks
+│   │   ├── lenna.png
+│   │   ├── baboon.png
+│   │   ├── peppers.jpg
+│   │   ├── bus.jpg
+│   │   ├── scene1.jpg
+│   │   ├── scene2.jpg
+│   │   └── scene3.jpg
+│   └── models/           # gitignored; downloaded YOLO weights
+└── artifacts/
+    ├── outputs/          # gitignored; generated images, videos, and YOLO runs
+    └── face_db/          # gitignored; persistent ChromaDB demo data
 ```
 
 ## Environment
