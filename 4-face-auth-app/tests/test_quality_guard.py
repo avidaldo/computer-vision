@@ -44,5 +44,5 @@ def test_sharp_bright_image_passes():
 def test_relative_paths_are_resolved_from_the_app_folder():
     config = make_config()
 
-    assert config.yolo_model_path == (APP_DIR / "../resources/models/yolov8n.pt").resolve()
+    assert config.yolo_model_path == (APP_DIR / "../resources/models/yolo26n.pt").resolve()
     assert config.image_path.is_file()

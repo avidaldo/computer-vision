@@ -15,7 +15,8 @@ from sentence_transformers import SentenceTransformer
 
 from config import FaceAuthConfig
 
-COSINE_SPACE = {"hnsw:space": "cosine"}
+# Rank neighbours by cosine distance (1 - cosine similarity).
+COSINE_CONFIGURATION = {"hnsw": {"space": "cosine"}}
 
 
 @dataclass

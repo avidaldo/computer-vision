@@ -15,7 +15,7 @@ from ultralytics import YOLO
 
 from config import FaceAuthConfig
 
-PERSON_CLASS_ID = 0  # "person" in the COCO classes YOLOv8 was trained on
+PERSON_CLASS_ID = 0  # "person" in the COCO classes the pretrained YOLO models know
 
 
 @dataclass

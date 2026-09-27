@@ -23,7 +23,7 @@ class FaceAuthConfig(BaseSettings):
     min_brightness: float = Field(default=40.0)
     min_sharpness: float = Field(default=100.0)
     verification_threshold: float = Field(default=0.80)
-    yolo_model_path: Path = Field(default=Path("../resources/models/yolov8n.pt"))
+    yolo_model_path: Path = Field(default=Path("../resources/models/yolo26n.pt"))
     clip_model_name: str = Field(default="clip-ViT-B-32")
 
     @field_validator("image_path", "db_path", "yolo_model_path")

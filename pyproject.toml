@@ -27,4 +27,8 @@ dev = [
 [tool.pytest.ini_options]
 pythonpath = ["4-face-auth-app"]
 testpaths = ["4-face-auth-app/tests"]
-filterwarnings = ["error"]
+filterwarnings = [
+    "error",
+    # Raised inside chromadb itself on Python 3.14; not something this project can fix
+    "ignore:'asyncio.iscoroutinefunction' is deprecated:DeprecationWarning:chromadb",
+]

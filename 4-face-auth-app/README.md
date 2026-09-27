@@ -16,7 +16,7 @@ uv run python face_auth.py ../resources/images/face2.jpg   # someone who is not 
 uv run python face_auth.py ../resources/images/peppers.jpg # no person at all
 ```
 
-YOLO weights (~6 MB) and CLIP (~600 MB) download on the first run. To change a setting, copy `.env.example` to `.env` and edit it; relative paths are resolved from this folder.
+YOLO26 weights (~5 MB) and CLIP (~600 MB) download on the first run. To change a setting, copy `.env.example` to `.env` and edit it; relative paths are resolved from this folder.
 
 Tests (no model needed): `uv run pytest` from the repository root.
 
@@ -25,7 +25,7 @@ Tests (no model needed): `uv run pytest` from the repository root.
 | File | Responsibility | From the notebook |
 |---|---|---|
 | [`config.py`](config.py) | Settings with Pydantic Settings; same pattern as [ai-chat-guardrails](https://github.com/avidaldo/ai-chat-guardrails/blob/main/chatbot/config.py) | the hard-coded values |
-| [`quality_guard.py`](quality_guard.py) | Brightness and sharpness checks; YOLO person detection and crop | `capture_faces_from_webcam()`, `detect_and_crop_face()` |
+| [`quality_guard.py`](quality_guard.py) | Brightness and sharpness checks; YOLO26 person detection and crop | `capture_faces_from_webcam()`, `detect_and_crop_face()` |
 | [`verification.py`](verification.py) | CLIP embedding; nearest enrolled user in ChromaDB; threshold decision | `embed_face()`, `verify_identity()` |
 | [`enroll.py`](enroll.py) | Phase 1: store one embedding per known user | step 4 |
 | [`face_auth.py`](face_auth.py) | Phase 2: grant or deny access to one image | steps 1–5 in order |
@@ -40,22 +40,23 @@ Tests (no model needed): `uv run pytest` from the repository root.
 
 ## What It Really Shows: Measured Results
 
-With the default settings (threshold 0.80, minimum sharpness 100):
+With the default settings (YOLO26n, threshold 0.80, minimum sharpness 100):
 
 | Image | Who | Result |
 |---|---|---|
 | `scene1.jpg` | Alice, enrolled **from this very image** | granted, similarity 1.000 |
-| `face2.jpg` | not enrolled | denied, closest Charlie at 0.704 |
+| `face2.jpg` | not enrolled | denied, closest Bob at 0.721 |
 | `peppers.jpg` | no person | denied, no person detected |
 | `face1.jpg`, `face3.jpg` | not enrolled | denied as **"too blurred"** (sharpness 95 and 86) |
 
-With the sharpness check relaxed to 50, the strangers score between 0.64 and 0.75: all below 0.80, but only by about 0.05.
+With the sharpness check relaxed to 50 (`MIN_SHARPNESS=50 uv run python face_auth.py ...`), the strangers score between 0.62 and 0.76 (`face1` 0.757, `face2` 0.721, `lenna.png` 0.694, `face3` 0.620): all below 0.80, the closest by only 0.043.
 
 Read those numbers critically:
 
 - **The "granted" case proves nothing.** Enrolling and verifying with the same image always gives 1.000. The real test is a *different* photo of an enrolled person, and these images don't include one.
 - **The sharpness check rejected sharp photos.** `face1` and `face3` are crisp studio portraits on plain backgrounds. The variance of the Laplacian counts *edges*, and a plain background has almost none. A fixed threshold that suits busy scenes rejects clean portraits. That is a false rejection caused by the metric, not by the camera.
-- **The margin against strangers is thin.** A threshold 0.05 lower would have let `face1` in as Alice.
+- **The margin against strangers is thin.** A threshold 0.05 lower would have let `face1` in.
+- **Every stranger's closest match is the same user, Bob** — a young woman, a bearded man, a bald man and the classic Lenna test image alike. What they share with Bob's photo is the *kind of picture* (one person, portrait framing), not the face. That is CLIP doing its job, describing what the picture shows; it is just not the job access control needs.
 
 ## Suggested Improvements
 
@@ -69,8 +70,8 @@ These close the gap between this prototype and something you could trust with a 
 
 ### Better models
 
-- **Detect faces, not bodies.** YOLO class 0 is *person*: the crop includes clothes and background, and CLIP embeds all of it. A face-specific detector (`yolov8n-face.pt`, or OpenCV's DNN face detector) gives tight face crops.
-- **Use a face-recognition embedding.** CLIP was trained to match images with captions, so it encodes *what the picture shows* (a man in a grey jumper) more than *who* it is. Models trained for identity, such as ArcFace (via `insightface`) or FaceNet (`facenet-pytorch`), separate people far better.
+- **Detect faces, not bodies.** YOLO class 0 is *person*: the crop includes clothes and background, and CLIP embeds all of it. A face detector gives tight face crops: OpenCV's `cv2.FaceDetectorYN` (YuNet: the class is built into OpenCV, its small ONNX model is downloaded from the OpenCV Zoo), or a community YOLO model fine-tuned on faces. Community weights such as `yolov8n-face` are not Ultralytics releases, so check their source and licence before using them.
+- **Use a face-recognition embedding.** CLIP was trained to match images with captions, so it encodes *what the picture shows* (a man in a grey jumper) more than *who* it is. Models trained for identity separate people far better. The lightest option needs no new dependency: OpenCV's `cv2.FaceRecognizerSF` (SFace, model from the OpenCV Zoo) pairs with `cv2.FaceDetectorYN`, which also aligns the face before embedding it. Heavier options are ArcFace (via `insightface`) and FaceNet (`facenet-pytorch`).
 - **Liveness detection.** Today a printed photo of Alice gets in as Alice. Blink detection, small head movements or a depth camera address this *presentation attack*.
 
 ### A real enrolment and use flow

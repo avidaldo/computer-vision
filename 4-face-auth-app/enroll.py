@@ -12,7 +12,7 @@ import chromadb
 
 from config import APP_DIR, FaceAuthConfig
 from quality_guard import extract_person
-from verification import COSINE_SPACE, embed_face
+from verification import COSINE_CONFIGURATION, embed_face
 
 IMAGES_DIR = APP_DIR.parent / "resources" / "images"
 
@@ -29,7 +29,7 @@ def main() -> None:
     client = chromadb.PersistentClient(path=str(config.db_path))
     if config.collection_name in {collection.name for collection in client.list_collections()}:
         client.delete_collection(config.collection_name)
-    collection = client.create_collection(name=config.collection_name, metadata=COSINE_SPACE)
+    collection = client.create_collection(name=config.collection_name, configuration=COSINE_CONFIGURATION)
 
     for name, image_path in ENROLMENTS.items():
         print(f"{name} ({image_path.name})")

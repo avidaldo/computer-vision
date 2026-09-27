@@ -15,7 +15,7 @@ import chromadb
 
 from config import FaceAuthConfig
 from quality_guard import extract_person
-from verification import COSINE_SPACE, verify_identity
+from verification import COSINE_CONFIGURATION, verify_identity
 
 
 def main() -> None:
@@ -33,7 +33,7 @@ def main() -> None:
         return
 
     collection = chromadb.PersistentClient(path=str(config.db_path)).get_or_create_collection(
-        config.collection_name, metadata=COSINE_SPACE
+        config.collection_name, configuration=COSINE_CONFIGURATION
     )
     result = verify_identity(crop, collection, config)
     if result.similarity is not None:
