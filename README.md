@@ -12,7 +12,7 @@ The module is a path in five stages. Each stage builds on the previous ones, and
 
 ## 2. YOLO: Object Detection
 
-- [2-yolo/object_detection_and_yolo.ipynb](2-yolo/object_detection_and_yolo.ipynb): detection concepts and inference; bounding boxes, IoU, NMS, metrics, pre-trained inference, segmentation, speed comparison, and export.
+- [2-yolo/object_detection_and_yolo.ipynb](2-yolo/object_detection_and_yolo.ipynb): detection concepts and inference with YOLO26, the current Ultralytics model; bounding boxes, IoU, NMS, metrics, pre-trained inference, segmentation, speed comparison, and export.
 - [2-yolo/yolo_custom_training.ipynb](2-yolo/yolo_custom_training.ipynb): fine-tuning YOLO; annotation format, dataset validation, training configuration, plots, transfer learning, and catastrophic forgetting.
 
 ## 3. Embeddings, Vector Databases, and Recognition
@@ -32,6 +32,15 @@ The same embedding + vector search technique works for text: [ai-chat-guardrails
 The [app's README](4-face-auth-app/README.md#suggested-improvements) lists the next steps, from calibrating the threshold with real genuine and impostor pairs, to face-specific detectors and embeddings, liveness detection, webcam enrolment with several frames per person, video input and an audit trail.
 
 The gap between the notebook prototype and a real deployment is mostly reliability engineering, not new algorithms. That makes it a good project scope for learning.
+
+## How to Reuse This in Your Own Projects
+
+The path is also a recipe for your own computer vision applications:
+
+1. **Prototype in a notebook**, one step per cell, looking at every intermediate image and number. That is what notebooks are for.
+2. **Measure before trusting.** Every threshold (brightness, sharpness, similarity) should come from examples of both outcomes, and be checked on examples you did not use to choose it. The app's README shows how misleading a demo can be without this.
+3. **Pick models trained for your task.** YOLO pretrained on COCO detects persons, not faces; CLIP describes images, it does not identify people. The pipeline structure transfers to any task; the models must fit it.
+4. **Move to an application** when the steps work: one module per responsibility, every setting in `.env` read with Pydantic Settings, a decision for every way each step can fail, and tests for the logic that does not need a model ([4-face-auth-app](4-face-auth-app/)).
 
 ## Repository Structure
 
