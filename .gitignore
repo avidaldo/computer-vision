@@ -7,3 +7,8 @@ resources/models/
 
 *.mp4
 *.mov
+
+# Local settings and Python caches
+.env
+__pycache__/
+.pytest_cache/
